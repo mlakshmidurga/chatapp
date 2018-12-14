@@ -63,7 +63,7 @@ module.exports =
        User.create(body)
        .then((user) => {
                const token = jwt.sign({data: user}, dbConfig.secret, {
-                     expiresIn: "1h"   
+                     expiresIn: '1h'   
                });
                res.cookie('auth', token);
               res
@@ -89,17 +89,20 @@ module.exports =
 
           return bcrypt.compare(req.body.password, user.password). then((result) => {
               if(!result) {
-                return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message: 'password is incorret'});
+                return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .json({message: 'password is incorret'});
               }
               const token = jwt.sign({data: user}, dbConfig.secret, {
                   expiresIn : '1h'
               });
               res.cookie('auth', token);
-              return res.status(HttpStatus.OK).json({message: 'Login Sucessful', user, token});
+              return res.status(HttpStatus.OK)
+              .json({message: 'Login Sucessful', user, token});
           });
       })
       .catch(err => {
-        return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({message: 'Error occured '});
+        return res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .json({message: 'Error occured '});
       });
     }
 };
